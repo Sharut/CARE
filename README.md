@@ -9,8 +9,8 @@ Self-supervised learning converts raw perceptual data such as images to a compac
 
 The key contributions of this work include: 
 - Introducing CARE, a novel equivariant contrastive learning framework that trains transformations (cropping, jittering, blurring, etc.) in input space to approximately correspond to local orthogonal transformations in representation space. 
-- Theoretically proving and empirically demonstrating that \care places an orthogonally equivariant structure on the embedding space.
-- Showing that \care increases sensitivity to features (e.g., color) compared to invariance-based contrastive methods, and  also improves performance on image recognition tasks.
+- Theoretically proving and empirically demonstrating that CARE places an orthogonally equivariant structure on the embedding space.
+- Showing that CARE increases sensitivity to features (e.g., color) compared to invariance-based contrastive methods, and  also improves performance on image recognition tasks.
 
 
 ## CARE: Contrastive Augmentation-induced Rotational Equivariance
@@ -20,7 +20,7 @@ The code has the following package dependencies:
 - Pytorch >= 0.13.0 (preferably 2.0.0)
 - Torchvision >=  0.12.0 
 
-After installing these dependencies, install ImageNet100 dataset using a subset of the ImageNet, as given at https://github.com/HobbitLong/CMC/blob/master/imagenet100.txt 
+After installing these dependencies, install ImageNet100 dataset using a subset of the official ImageNet dataset, as given at https://github.com/HobbitLong/CMC/blob/master/imagenet100.txt 
 
 ### Training and Evaluation
 
@@ -29,24 +29,24 @@ After installing these dependencies, install ImageNet100 dataset using a subset 
 To train CARE with SimCLR bacbone using ResNet50 model on STL10 dataset, run the following command: 
 ```
 CUDA_VISIBLE_DEVICES=0,1 python main.py \
-						 --model resnet50 \
-						 --optimizer SGD \
-						 --lr 0.06 \
-						 --weight-decay 5e-4 \
-						 --lr-schedule-type cosine \
-						 --warmup-epochs 10 \
-						 --temperature 0.5 \
-						 --epochs 400 \
-						 --batch-size 256 \
-						 --weight 0.01 \
-						 --equiv-splits 8 \
-						 --dataset-name stl10 \
-						 --log-freq 1 \
-						 --save-root PATH/TO/LOG \
-						 --data-root PATH/TO/DATA \
-						 --project PROJECT_NAME \
-						 --user SAMPLE_USER \
-						 --run-name RUN_NAME \
+  --model resnet50 \
+  --optimizer SGD \
+  --lr 0.06 \
+  --weight-decay 5e-4 \
+  --lr-schedule-type cosine \
+  --warmup-epochs 10 \
+  --temperature 0.5 \
+  --epochs 400 \
+  --batch-size 256 \
+  --weight 0.01 \
+  --equiv-splits 8 \
+  --dataset-name stl10 \
+  --log-freq 1 \
+  --save-root PATH/TO/LOG \
+  --data-root PATH/TO/DATA \
+  --project PROJECT_NAME \
+  --user SAMPLE_USER \
+  --run-name RUN_NAME \
 ```
 To run standard SimCLR model, simply add another argument `--train-simclr`.
 This script uses all the default hyper-parameters as described in the CARE paper. Training should fit on 2 NVIDIA Tesla V100 GPUs with 32GB accelerator RAM. 
@@ -54,16 +54,16 @@ This script uses all the default hyper-parameters as described in the CARE paper
 For linear evaluation, run the following command:
 ```
 CUDA_VISIBLE_DEVICES=0,1 python linear.py 
-						 --model-path PATH/TO/MODEL \
-						 --model resnet50 \
-						 --lin-eval \
-						 --load-epoch 400 \
-						 --dataset-name STL10 \ 
-						 --data-root PATH/TO/DATA \ 
-						 --save-root PATH/TO/LOG \
-						 --project-name PROJECT_NAME \
-						 --user SAMPLE_USER \
-						 --run-name RUN_NAME
+  --model-path PATH/TO/MODEL \
+  --model resnet50 \
+  --lin-eval \
+  --load-epoch 400 \
+  --dataset-name STL10 \ 
+  --data-root PATH/TO/DATA \ 
+  --save-root PATH/TO/LOG \
+  --project-name PROJECT_NAME \
+  --user SAMPLE_USER \
+  --run-name RUN_NAME
 
 ```
 
@@ -112,3 +112,8 @@ python -m torch.distributed.launch --nproc_per_node=1 --nnodes=${SLURM_JOB_NUM_N
   --run-name RUN_NAME \
 ```
 
+### Results
+
+<p align='center'>
+<img src='./figures/accuracy_bars.png' width='1000'/>
+</p>
